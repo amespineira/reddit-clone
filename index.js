@@ -1,4 +1,4 @@
-var app = angular.module("reddit", ['ngMessages']);
+var app = angular.module("reddit", ['ngMessages', 'ngAnimate']);
 
 app.controller('main', function($scope){
   $scope.sortExpand=false;
@@ -61,9 +61,7 @@ app.controller('main', function($scope){
     $scope.sort($scope.sortType)
   }
   $scope.sort=function(type){
-    console.log("doing sort");
     $scope.sortType=type;
-    console.log(type);
     switch (type){
       case "votes":
         $scope.posts.sort(function(a, b){
@@ -79,8 +77,11 @@ app.controller('main', function($scope){
   }
   $scope.search=function(){
     $scope.posts.forEach(function(post){
-      post.show=!(post.text.indexOf($scope.view.search)===-1 && post.title.indexOf($scope.view.search)===-1)
     })
+  }
+  $scope.textFilter=function(post){
+    return ($scope.view.search===undefined)? true :!(post.text.indexOf($scope.view.search)===-1 && post.title.indexOf($scope.view.search)===-1)
+
   }
   $scope.addComment=function(post){
     post.comments.push({

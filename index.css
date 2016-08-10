@@ -5,6 +5,9 @@ img{
 }
 .row{
   margin-bottom: 10px;
+  background-color:#F6F3F8;
+  margin-left:5%;
+  margin-right:5%;
 }
 .new-form{
   margin-left: 5%;
@@ -16,4 +19,42 @@ img{
 }
 .negative{
   color:red;
+}
+.ng-enter {
+  -webkit-transition: 1s;
+  transition: 1s;
+  opacity: 0;
+}
+
+.ng-enter-active {
+  opacity: 1;
+}
+
+.ng-leave {
+  -webkit-transition: 1s;
+  transition: 1s;
+
+  opacity: 1;
+}
+
+.ng-leave-active {
+  opacity: 0;
+}
+
+/* Note that  you can just call .ng-enter {  // code }
+To apply animations to ALL elements entering the DOM ,
+whereas here we do .row.ng-enter to specify animations to
+only the .row class
+*/
+
+
+.info_box{
+  border: 1px solid #333;
+  padding: 5px;
+  background-color: #555;
+  color: #fff;
+  box-shadow: 10px 10px 5px #888888;
+  font-family: Helvetica;
+  font-weight: 100;
+  font-size: 12px;
 }

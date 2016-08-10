@@ -46,32 +46,37 @@
     <div class="new-form" ng-show="showSubmit">
       <form name="postForm" ng-submit="submit()" >
         <h4>Title</h4>
-        <p ng-class="{'has-error': postForm.title.$invalid && postForm.title.$dirty, 'has-success': userForm.title.$valid}">
+        <p ng-class="{'has-error': postForm.title.$invalid && postForm.title.$dirty, 'has-success': postForm.title.$valid}">
           <input type="text" class="form-control"  name="title" ng-model="new.title"  required/>
         </p>
         <h4>Author</h4>
-        <p ng-class="{'has-error': postForm.author.$invalid && postForm.author.$dirty, 'has-success': userForm.author.$valid}">
+        <p ng-class="{'has-error': postForm.author.$invalid && postForm.author.$dirty, 'has-success': postForm.author.$valid}">
           <input type="text" class="form-control" name="author" ng-model="new.author" required/>
         </p>
         <h4>Image Url</h4>
-        <p ng-class="{'has-error': postForm.img.$invalid && postForm.img.$dirty, 'has-success': userForm.img.$valid}">
+        <p ng-class="{'has-error': postForm.img.$invalid && postForm.img.$dirty, 'has-success': postForm.img.$valid}">
           <input type="text" class="form-control" name="img" ng-model="new.img" required/>
         </p>
         <h4>Description</h4>
-        <p ng-class="{'has-error': postForm.text.$invalid && postForm.text.$dirty, 'has-success': userForm.text.$valid}">
+        <p ng-class="{'has-error': postForm.text.$invalid && postForm.text.$dirty, 'has-success': postForm.text.$valid}">
           <input type="text" class="form-control" name="text" ng-model="new.text" required/>
         </p>
         <input type="submit" style="margin-top:10px" class="btn btn-default" >
 
       </form>
     </div>
-    <div ng-repeat="post in posts">
-      <div  ng-show="post.show" style="background-color:#F6F3F8; margin-left:5%; margin-right:5%;" class="row" >
+      <div class="row" ng-repeat="post in posts | filter : textFilter" >
         <img class="col-md-2" ng-src="{{post.img}}">
         <p class="col-md-6">{{post.title}} | <a><span ng-click="addVote(post, 'up')"class="glyphicon glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a><a><span ng-click="addVote(post, 'down')"class="glyphicon glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a> <span ng-class="{'positive': post.score>0, 'negative': post.score<0}">{{post.score}}</span></p>
         <p class="col-md-4">By {{post.author}}
         <p>{{post.text}}</p>
-        <p>{{post.posted | date: "MM/dd/yyyy 'at' h:mma"}} | <a ng-click="post.showComments=!post.showComments">{{post.comments.length}} Comments</a> | <a ng-click="post.addComment=!post.addComment">Add Comment</a></p>
+        <p>{{post.posted | date: "MM/dd/yyyy 'at' h:mma"}} | <a ng-click="post.showComments=!post.showComments">
+          <ng-pluralize count="post.comments.length"
+                when="{'0': 'No comments yet',
+                       '1': '1 comment',
+                       'other': '{{post.comments.length}} comments'}">
+          </ng-pluralize></a> | <a ng-click="post.addComment=!post.addComment">Add Comment</a>
+        </p>
         <div ng-show="post.showComments">
           <p style="margin-left:5%"ng-repeat="comment in post.comments">
             <strong>{{comment.author}}</strong>: {{comment.text}}
@@ -85,7 +90,6 @@
           <input type="submit" class="btn btn-default">
         </form>
       </div>
-    </div>
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.js"></script>
