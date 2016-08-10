@@ -1,0 +1,19 @@
+img{
+  height:150px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.row{
+  margin-bottom: 10px;
+}
+.new-form{
+  margin-left: 5%;
+  margin-bottom: 10px;
+}
+
+.positive{
+  color:green;
+}
+.negative{
+  color:red;
+}

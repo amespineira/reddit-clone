@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html ng-app='reddit'>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="./index.css"
+  </head>
+  <body ng-controller="main">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Reddit Clone</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li ng-mouseenter="subIsActive=true" ng-mouseleave="subIsActive=false" ng-click="showSubmit=!showSubmit" ng-class="{'active': subIsActive}"><a >+ Submit Post <span class="sr-only">(current)</span></a></li>
+            <li class="dropdown" ng-class="{'open':sortExpand}" ng-mouseenter="sortExpand=true" ng-mouseleave="sortExpand=false">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"  >Sort By {{sortType}}<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#" ng-click="sort('votes')">Votes</a></li>
+                <li><a href="#" ng-click="sort('date')">Date</a></li>
+                <li><a href="#" ng-click="sort('title')">Title</a></li>
+              </ul>
+            </li>
+
+          </ul>
+          <form class="navbar-form navbar-left">
+            <div class="form-group">
+              <input type="text" ng-keyup='search()' ng-model="view.search" class="form-control" placeholder="Search">
+            </div>
+          </form>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="new-form" ng-show="showSubmit">
+      <form name="postForm" ng-submit="submit()" >
+        <h4>Title</h4>
+        <p ng-class="{'has-error': postForm.title.$invalid && postForm.title.$dirty, 'has-success': userForm.title.$valid}">
+          <input type="text" class="form-control"  name="title" ng-model="new.title"  required/>
+        </p>
+        <h4>Author</h4>
+        <p ng-class="{'has-error': postForm.author.$invalid && postForm.author.$dirty, 'has-success': userForm.author.$valid}">
+          <input type="text" class="form-control" name="author" ng-model="new.author" required/>
+        </p>
+        <h4>Image Url</h4>
+        <p ng-class="{'has-error': postForm.img.$invalid && postForm.img.$dirty, 'has-success': userForm.img.$valid}">
+          <input type="text" class="form-control" name="img" ng-model="new.img" required/>
+        </p>
+        <h4>Description</h4>
+        <p ng-class="{'has-error': postForm.text.$invalid && postForm.text.$dirty, 'has-success': userForm.text.$valid}">
+          <input type="text" class="form-control" name="text" ng-model="new.text" required/>
+        </p>
+        <input type="submit" style="margin-top:10px" class="btn btn-default" >
+
+      </form>
+    </div>
+    <div ng-repeat="post in posts">
+      <div  ng-show="post.show" style="background-color:#F6F3F8; margin-left:5%; margin-right:5%;" class="row" >
+        <img class="col-md-2" ng-src="{{post.img}}">
+        <p class="col-md-6">{{post.title}} | <a><span ng-click="addVote(post, 'up')"class="glyphicon glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a><a><span ng-click="addVote(post, 'down')"class="glyphicon glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a> <span ng-class="{'positive': post.score>0, 'negative': post.score<0}">{{post.score}}</span></p>
+        <p class="col-md-4">By {{post.author}}
+        <p>{{post.text}}</p>
+        <p>{{post.posted | date: "MM/dd/yyyy 'at' h:mma"}} | <a ng-click="post.showComments=!post.showComments">{{post.comments.length}} Comments</a> | <a ng-click="post.addComment=!post.addComment">Add Comment</a></p>
+        <div ng-show="post.showComments">
+          <p style="margin-left:5%"ng-repeat="comment in post.comments">
+            <strong>{{comment.author}}</strong>: {{comment.text}}
+          </p>
+        </div>
+        <form ng-show="post.addComment" ng-submit="addComment(post)">
+          <label for="author">Author: </label>
+          <input type="text"  name='author'  ng-model="newComment.author" required>
+          <label for="text">Comment: </label>
+          <input type="text"  name='text'  ng-model="newComment.text" required>
+          <input type="submit" class="btn btn-default">
+        </form>
+      </div>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-messages/1.5.8/angular-messages.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  <script src="index.js"></script>
+
+</html>
